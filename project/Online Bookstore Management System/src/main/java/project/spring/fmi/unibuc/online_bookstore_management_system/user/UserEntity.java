@@ -3,7 +3,7 @@ package project.spring.fmi.unibuc.online_bookstore_management_system.user;
 import jakarta.persistence.*;
 
 @Entity
-@Table
+@Table(name = "users")
 public class UserEntity {
     public static UserEntity signedInUser;
 
@@ -17,14 +17,14 @@ public class UserEntity {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-    private Integer userID;
+    private Long userID;
     private String username, password, email;
     private Boolean isAdmin = false;
 
     public UserEntity() {
     }
 
-    public UserEntity(Integer userID, String username, String password, String email) {
+    public UserEntity(Long userID, String username, String password, String email) {
         this.userID = userID;
         this.username = username;
         this.password = password;
@@ -37,11 +37,11 @@ public class UserEntity {
         this.email = email;
     }
 
-    public Integer getUserID() {
+    public Long getUserID() {
         return userID;
     }
 
-    public void setUserID(Integer userID) {
+    public void setUserID(Long userID) {
         this.userID = userID;
     }
 

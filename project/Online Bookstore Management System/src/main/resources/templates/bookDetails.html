@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Details</title>
+</head>
+<body>
+<h1>Book Details</h1>
+<div th:if="${book != null}">
+    <p>Title: <span th:text="${book.title}"></span></p>
+    <p>Author: <span th:text="${book.author}"></span></p>
+    <p>Price: <span th:text="${book.price}"></span></p>
+</div>
+<div th:if="${book == null}">
+    <p>Book not found!</p>
+</div>
+</body>
+</html>

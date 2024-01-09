@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Login</h1>
-<form th:action="@{/api/auth/login/submit}" th:object="${userEntity}" method="post">
+<form th:action="@{/auth/login/submit}" th:object="${userEntity}" method="post">
     <label for="username">Username:</label>
     <input type="text" id="username" th:field="*{username}"><br><br>
 
