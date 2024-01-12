@@ -2,38 +2,74 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>View Cart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        /* Add your styles here */
+    </style>
 </head>
 <body>
-<h1>Your Shopping Cart</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Book ID</th>
-        <th>Quantity</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${cart.cartItems}">
-        <td th:text="${item.bookId}"></td>
-        <td>
-            <form th:action="@{/cart/update}" method="post">
-                <input type="hidden" name="cartId" th:value="${cart.id}" />
-                <input type="hidden" name="bookId" th:value="${item.bookId}" />
-                <input type="number" name="quantity" th:value="${item.quantity}" />
-                <button type="submit">Update Quantity</button>
-            </form>
-        </td>
-        <td>
-            <form th:action="@{/cart/remove}" method="post">
-                <input type="hidden" name="cartId" th:value="${cart.id}" />
-                <input type="hidden" name="bookId" th:value="${item.bookId}" />
-                <button type="submit">Remove</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+
+<h2>Your Shopping Cart</h2>
+
+<!-- Check if the cart is not empty -->
+<div th:if="${cart.cartItems.size() > 0}">
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Quantity</th>
+            <th>Price per Unit</th>
+            <th>Total Price</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over cart items -->
+        <tr th:each="item : ${cart.cartItems}">
+            <td th:text="${books.getBookById(item.bookId).title}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${books.getBookById(item.bookId).price}"></td>
+            <td th:text="${books.getBookById(item.bookId).price * item.quantity}"></td>
+            <td>
+                <form th:action="@{/cart/update}" method="post">
+                    <input type="hidden" name="cartId" th:value="${cart.id}">
+                    <input type="hidden" name="bookId" th:value="${item.bookId}">
+                    <input type="number" name="quantity" th:value="${item.quantity}" min="1">
+                    <button type="submit">Update</button>
+                </form>
+                <form th:action="@{/cart/remove}" method="post">
+                    <input type="hidden" name="cartId" th:value="${cart.id}">
+                    <input type="hidden" name="bookId" th:value="${item.bookId}">
+                    <button type="submit">Remove</button>
+                </form>
+            </td>
+        </tr>
+        <!-- End of iteration -->
+        </tbody>
+    </table>
+
+    <div class="total">
+        <strong>Total Price: <span th:text="${totalPrice}"></span></strong>
+    </div>
+
+    <div class="action-buttons">
+        <!-- You can add more styling or functionality here -->
+        <button type="button" onclick="submitOrder()">Submit Order</button>
+    </div>
+</div>
+
+<!-- Show a message if the cart is empty -->
+<div th:unless="${cart.cartItems.size() > 0}">
+    <p>Your cart is empty.</p>
+</div>
+
+<script>
+    function submitOrder() {
+        // Implement logic to submit the order
+        console.log('Order submitted');
+    }
+</script>
+
 </body>
 </html>

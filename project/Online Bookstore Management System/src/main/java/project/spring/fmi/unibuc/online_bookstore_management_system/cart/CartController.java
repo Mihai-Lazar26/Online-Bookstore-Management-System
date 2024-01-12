@@ -4,26 +4,38 @@ import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import project.spring.fmi.unibuc.online_bookstore_management_system.book.BookEntity;
+import project.spring.fmi.unibuc.online_bookstore_management_system.book.BookService;
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
     private final CartService cartService;
+    private final BookService bookService;
 
     @Autowired
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, BookService bookService) {
         this.cartService = cartService;
+        this.bookService = bookService;
     }
 
     @GetMapping("/view")
     public String viewCart(Model model, @RequestParam Long userId) {
         CartEntity cart = cartService.getCartByUserId(userId);
         if (cart != null) {
+
+            Integer totalSum = 0;
+            for (CartItemEntity item : cart.getCartItems()){
+                BookEntity book = bookService.getBookById(item.getBookId());
+                totalSum += book.getPrice() * item.getQuantity();
+            }
+
             model.addAttribute("cart", cart);
-            return "viewCart"; // Thymeleaf view to display the cart contents
+            model.addAttribute("books", bookService);
+            model.addAttribute("totalPrice", totalSum);
+            return "viewCart";
         } else {
-            // Handle the case where the cart is not found for the given user
-            return "errorPage"; // Redirect to an error page or handle appropriately
+            return "errorPage";
         }
     }
 

@@ -1,8 +1,12 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.cart;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.spring.fmi.unibuc.online_bookstore_management_system.book.BookEntity;
+import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,11 +54,17 @@ public class CartService {
         // Fetch the cart item and update its quantity
         CartItemEntity cartItem = cartItemRepository.findByCartIdAndBookId(cartId, bookId);
         if (cartItem != null) {
-            cartItem.setQuantity(newQuantity);
-            cartItemRepository.save(cartItem);
+            if (newQuantity > 0) {
+                cartItem.setQuantity(newQuantity);
+                cartItemRepository.save(cartItem);
+            }
+            else {
+                cartItemRepository.delete(cartItem);
+            }
         }
     }
 
+    @Transactional
     public void removeFromCart(Long cartId, Long bookId) {
         cartItemRepository.deleteByCartIdAndBookId(cartId, bookId);
     }
@@ -66,6 +76,22 @@ public class CartService {
     public CartEntity getCartByCartId(Long cartId) {
         Optional<CartEntity> optionalCart = cartRepository.findById(cartId);
         return optionalCart.orElse(null);
+    }
+
+    public void deleteCartItemsByBook(BookEntity book) {
+        List<CartItemEntity> cartItems = cartItemRepository.findByBookId(book.getId());
+        cartItemRepository.deleteAll(cartItems);
+    }
+
+    public void deleteCartAndCartItemsByUser(UserEntity user) {
+        CartEntity userCart = cartRepository.findByUserId(user.getUserID());
+
+        if (userCart != null) {
+            List<CartItemEntity> cartItems = cartItemRepository.findByCartId(userCart.getId());
+
+            cartItemRepository.deleteAll(cartItems);
+            cartRepository.delete(userCart);
+        }
     }
 }
 

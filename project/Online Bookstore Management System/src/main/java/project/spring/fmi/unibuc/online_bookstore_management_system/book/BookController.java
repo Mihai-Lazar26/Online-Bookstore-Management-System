@@ -30,7 +30,9 @@ public class BookController {
 
     @GetMapping("/all")
     public String getAllBooks(Model model) {
-        // Your existing logic
+        if (UserEntity.signedInUser == null) {
+            return "reroute:/";
+        }
         List<BookEntity> books = bookService.getAllBooks();
         model.addAttribute("books", books);
         model.addAttribute("userId", UserEntity.signedInUser.getUserID()); // Add userId to the model

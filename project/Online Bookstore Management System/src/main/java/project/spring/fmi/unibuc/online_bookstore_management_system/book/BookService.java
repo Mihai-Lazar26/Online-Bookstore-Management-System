@@ -2,17 +2,21 @@ package project.spring.fmi.unibuc.online_bookstore_management_system.book;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.spring.fmi.unibuc.online_bookstore_management_system.cart.CartService;
 
 import java.util.List;
 
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final CartService cartService;
 
     @Autowired
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, CartService cartService) {
         this.bookRepository = bookRepository;
+        this.cartService = cartService;
     }
+
 
     public List<BookEntity> getAllBooks() {
         return bookRepository.findAll();
@@ -46,6 +50,8 @@ public class BookService {
                 .orElse(null);
 
         if (existingBook != null) {
+            cartService.deleteCartItemsByBook(existingBook);
+
             bookRepository.delete(existingBook);
             return true;
         }
