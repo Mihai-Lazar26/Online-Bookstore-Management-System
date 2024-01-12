@@ -88,15 +88,15 @@ public class CartController {
     }
 
     @PostMapping("/submitOrder")
-    public String submitOrder(@RequestParam Long userId) {
+    public String submitOrder(Model model, @RequestParam Long userId) {
         CartEntity cart = cartService.getCartByUserId(userId);
         if (cart != null && !cart.getCartItems().isEmpty()) {
             List<OrderItemEntity> orderItems = convertCartItemsToOrderItems(cart.getCartItems());
             orderService.submitOrder(userId, orderItems);
-            return "orderConfirmationPage";
+            return "redirect:/orders/viewUser?userId=" + userId;
         }
         else {
-            return "emptyCartPage";
+            return "redirect:/cart/view";
         }
     }
     private List<OrderItemEntity> convertCartItemsToOrderItems(List<CartItemEntity> cartItems) {

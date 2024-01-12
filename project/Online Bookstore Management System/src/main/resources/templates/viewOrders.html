@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Add your head content here -->
+</head>
+<body>
+<h2>Orders List</h2>
+
+<div th:if="${not #lists.isEmpty(orders)}">
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order: ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${order.totalPrice}"></td>
+            <td>
+                <div th:if="${isAdmin}">
+                    <form th:action="@{/orders/updateStatus}" method="post">
+                        <input type="hidden" name="orderId" th:value="${order.id}">
+                        <input type="text" name="status" th:value="${order.status}">
+                        <button type="submit">Update status</button>
+                    </form>
+                </div>
+                <div th:unless="${isAdmin}">
+                    <span th:text="${order.status}"></span>
+                </div>
+
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:if="${#lists.isEmpty(orders)}">
+    <p>No orders available.</p>
+</div>
+</body>
+</html>

@@ -38,6 +38,15 @@ public class OrderEntity {
         this.status = status;
     }
 
+    public Integer getTotalPrice() {
+        Integer sum = 0;
+        for (OrderItemEntity item : this.orderItems) {
+            sum += item.getPrice() * item.getQuantity();
+        }
+
+        return sum;
+    }
+
     public Long getId() {
         return id;
     }

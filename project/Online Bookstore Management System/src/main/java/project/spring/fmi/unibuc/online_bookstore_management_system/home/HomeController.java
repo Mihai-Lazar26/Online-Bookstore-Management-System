@@ -7,13 +7,6 @@ import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserEnt
 
 @Controller
 public class HomeController {
-//    @GetMapping
-//    public String homePage() {
-//        if (UserEntity.signedInUser != null) {
-//            return "redirect:/books";
-//        }
-//        return "redirect:/auth";
-//    }
 
     @GetMapping
     public String homePage(Model model) {
