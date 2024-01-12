@@ -54,8 +54,10 @@
     </div>
 
     <div class="action-buttons">
-        <!-- You can add more styling or functionality here -->
-        <button type="button" onclick="submitOrder()">Submit Order</button>
+        <form th:action="@{/cart/submitOrder}" method="post">
+            <input type="hidden" name="userId" th:value="${cart.userId}">
+            <button type="submit">Place order</button>
+        </form>
     </div>
 </div>
 
@@ -63,13 +65,6 @@
 <div th:unless="${cart.cartItems.size() > 0}">
     <p>Your cart is empty.</p>
 </div>
-
-<script>
-    function submitOrder() {
-        // Implement logic to submit the order
-        console.log('Order submitted');
-    }
-</script>
 
 </body>
 </html>

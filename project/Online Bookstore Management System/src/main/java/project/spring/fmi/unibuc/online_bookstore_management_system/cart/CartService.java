@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.spring.fmi.unibuc.online_bookstore_management_system.book.BookEntity;
 import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserEntity;
+import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +25,20 @@ public class CartService {
         return cartRepository.findByUserId(userId);
     }
 
-    public void addToCart(Long userId, Long bookId, int quantity) {
-        // Fetch or create a cart for the user
+    public CartEntity fetchCart(Long userId) {
         CartEntity cart = cartRepository.findByUserId(userId);
         if (cart == null) {
             cart = new CartEntity();
             cart.setUserId(userId);
+            cartRepository.save(cart);
         }
+
+        return cart;
+    }
+
+    public void addToCart(Long userId, Long bookId, int quantity) {
+        // Fetch or create a cart for the user
+        CartEntity cart = fetchCart(userId);
 
         // Check if the item exists in the cart, update quantity if yes, otherwise add a new item
         CartItemEntity cartItem = cart.getCartItems().stream()
@@ -92,6 +100,10 @@ public class CartService {
             cartItemRepository.deleteAll(cartItems);
             cartRepository.delete(userCart);
         }
+    }
+
+    public void clearCart(Long userId) {
+        cartRepository.deleteByUserId(userId);
     }
 }
 

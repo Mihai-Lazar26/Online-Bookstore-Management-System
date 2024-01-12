@@ -6,22 +6,40 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import project.spring.fmi.unibuc.online_bookstore_management_system.book.BookEntity;
 import project.spring.fmi.unibuc.online_bookstore_management_system.book.BookService;
+import project.spring.fmi.unibuc.online_bookstore_management_system.order.OrderItemEntity;
+import project.spring.fmi.unibuc.online_bookstore_management_system.order.OrderService;
+import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserEntity;
+import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
     private final CartService cartService;
     private final BookService bookService;
+    private final OrderService orderService;
+    private final UserService userService;
 
     @Autowired
-    public CartController(CartService cartService, BookService bookService) {
+    public CartController(CartService cartService, BookService bookService, OrderService orderService, UserService userService) {
         this.cartService = cartService;
         this.bookService = bookService;
+        this.orderService = orderService;
+        this.userService = userService;
     }
 
     @GetMapping("/view")
     public String viewCart(Model model, @RequestParam Long userId) {
-        CartEntity cart = cartService.getCartByUserId(userId);
+
+        UserEntity user = userService.findUserById(userId);
+        if (user == null) {
+            return "errorPage";
+        }
+
+        CartEntity cart = cartService.fetchCart(userId);
+
         if (cart != null) {
 
             Integer totalSum = 0;
@@ -67,6 +85,32 @@ public class CartController {
         } else {
             return "redirect:/cart/view";
         }
+    }
+
+    @PostMapping("/submitOrder")
+    public String submitOrder(@RequestParam Long userId) {
+        CartEntity cart = cartService.getCartByUserId(userId);
+        if (cart != null && !cart.getCartItems().isEmpty()) {
+            List<OrderItemEntity> orderItems = convertCartItemsToOrderItems(cart.getCartItems());
+            orderService.submitOrder(userId, orderItems);
+            return "orderConfirmationPage";
+        }
+        else {
+            return "emptyCartPage";
+        }
+    }
+    private List<OrderItemEntity> convertCartItemsToOrderItems(List<CartItemEntity> cartItems) {
+        return cartItems.stream().map(this::convertCartItemToOrderItem).collect(Collectors.toList());
+    }
+
+    private OrderItemEntity convertCartItemToOrderItem(CartItemEntity cartItem) {
+        OrderItemEntity orderItem = new OrderItemEntity();
+        BookEntity book = bookService.getBookById(cartItem.getBookId());
+        orderItem.setBookId(book.getId());
+        orderItem.setPrice(book.getPrice());
+        orderItem.setQuantity(cartItem.getQuantity());
+
+        return orderItem;
     }
 }
 

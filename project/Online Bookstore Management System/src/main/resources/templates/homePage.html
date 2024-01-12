@@ -40,6 +40,10 @@
     <button type="button">Book List</button>
   </a>
 
+  <form th:action="@{/cart/view}" method="get">
+    <input type="hidden" name="userId" th:value="${signedIn.userID}">
+    <button type="submit">View cart</button>
+  </form>
   <!-- Thymeleaf conditional check for admin privileges -->
   <div th:if="${isAdmin}">
     <!-- Buttons for managing books and users -->
