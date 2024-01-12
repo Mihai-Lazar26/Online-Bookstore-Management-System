@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserEntity;
 
 import java.util.List;
 
@@ -18,52 +19,74 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/all")
-    public String getAllBooks(Model model) {
+    @GetMapping("/manage")
+    public String getManageBooks(Model model) {
+        if (UserEntity.signedInUser == null || !UserEntity.signedInUser.getAdmin())
+            return "redirect:/";
         List<BookEntity> books = bookService.getAllBooks();
         model.addAttribute("books", books);
-        return "bookList"; // Thymeleaf view name (bookList.html)
+        return "bookListManage";
     }
+
+    @GetMapping("/all")
+    public String getAllBooks(Model model) {
+        // Your existing logic
+        List<BookEntity> books = bookService.getAllBooks();
+        model.addAttribute("books", books);
+        model.addAttribute("userId", UserEntity.signedInUser.getUserID()); // Add userId to the model
+        return "bookList";
+    }
+
 
     @GetMapping("/{id}")
     public String getBookById(@PathVariable Long id, Model model) {
+        if (UserEntity.signedInUser == null || !UserEntity.signedInUser.getAdmin())
+            return "redirect:/";
         BookEntity book = bookService.getBookById(id);
         model.addAttribute("book", book);
-        return "bookDetails"; // Thymeleaf view name (bookDetails.html)
+        return "bookDetails";
     }
 
     @GetMapping("/add")
     public String addBookForm(Model model) {
+        if (UserEntity.signedInUser == null || !UserEntity.signedInUser.getAdmin())
+            return "redirect:/";
         model.addAttribute("book", new BookEntity());
-        return "addBook"; // Thymeleaf view name for the form to add a new book (addBook.html)
+        return "addBook";
     }
 
     @PostMapping("/add")
     public String addBookSubmit(@ModelAttribute("book") BookEntity book) {
+        if (UserEntity.signedInUser == null || !UserEntity.signedInUser.getAdmin())
+            return "redirect:/";
         bookService.createBook(book);
-        return "redirect:/books/all"; // Redirect to the book list view after adding a book
+        return "redirect:/books/manage";
     }
 
     @GetMapping("/{id}/edit")
     public String editBookForm(@PathVariable Long id, Model model) {
+        if (UserEntity.signedInUser == null || !UserEntity.signedInUser.getAdmin())
+            return "redirect:/";
         BookEntity book = bookService.getBookById(id);
         model.addAttribute("book", book);
-        return "editBook"; // Thymeleaf view name for editing a book (editBook.html)
+        return "editBook";
     }
 
     @PostMapping("/{id}/edit")
     public String editBookSubmit(@PathVariable Long id, @ModelAttribute("book") BookEntity updatedBook) {
+        if (UserEntity.signedInUser == null || !UserEntity.signedInUser.getAdmin())
+            return "redirect:/";
         bookService.updateBook(id, updatedBook);
-        return "redirect:/books/all"; // Redirect to the book list view after updating a book
+        return "redirect:/books/manage";
     }
 
     @PostMapping("/{id}/delete")
     public String deleteBook(@PathVariable Long id) {
+        if (UserEntity.signedInUser == null || !UserEntity.signedInUser.getAdmin())
+            return "redirect:/";
         bookService.deleteBook(id);
-        return "redirect:/books/all"; // Redirect to the book list view after deleting a book
+        return "redirect:/books/manage";
     }
-
-    // Other methods for adding, updating, and deleting books can be added similarly
 }
 
 

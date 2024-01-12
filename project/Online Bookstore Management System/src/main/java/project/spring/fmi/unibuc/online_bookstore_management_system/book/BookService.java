@@ -31,16 +31,14 @@ public class BookService {
                 .orElse(null);
 
         if (existingBook != null) {
-            // Update the existing book entity with the new details
             existingBook.setTitle(updatedBook.getTitle());
             existingBook.setAuthor(updatedBook.getAuthor());
             existingBook.setPrice(updatedBook.getPrice());
-            // Update other fields as needed
 
             return bookRepository.save(existingBook);
         }
 
-        return null; // Return null if the book with the given ID is not found
+        return null;
     }
 
     public boolean deleteBook(Long id) {
@@ -49,10 +47,10 @@ public class BookService {
 
         if (existingBook != null) {
             bookRepository.delete(existingBook);
-            return true; // Deletion successful
+            return true;
         }
 
-        return false; // Return false if the book with the given ID is not found
+        return false;
     }
 
 

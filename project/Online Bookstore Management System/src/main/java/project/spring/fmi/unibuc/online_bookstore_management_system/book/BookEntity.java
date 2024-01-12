@@ -1,6 +1,10 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.book;
 
 import jakarta.persistence.*;
+import project.spring.fmi.unibuc.online_bookstore_management_system.cart.CartItemEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "books")

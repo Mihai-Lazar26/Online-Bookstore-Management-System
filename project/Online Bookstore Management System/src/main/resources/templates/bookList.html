@@ -1,36 +1,71 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Book List</title>
+    <meta charset="UTF-8">
+    <title>Book List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <h1>Book List</h1>
 <table>
-  <thead>
-  <tr>
-    <th>Title</th>
-    <th>Author</th>
-    <th>Price</th>
-    <!-- Add other book attributes' headers as needed -->
-    <th>Edit</th>
-    <th>Delete</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="book : ${books}">
-    <td th:text="${book.title}"></td>
-    <td th:text="${book.author}"></td>
-    <td th:text="${book.price}"></td>
-    <!-- Display other book details -->
-    <td><a th:href="@{/books/__${book.id}__/edit}">Edit</a></td>
-    <td>
-      <form th:action="@{/books/__${book.id}__/delete}" method="post">
-        <button type="submit">Delete</button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.price}"></td>
+        <td>
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <input type="hidden" name="bookId" th:value="${book.id}" />
+                <input type="number" name="quantity" value="1" min="1" /> <!-- Default quantity -->
+        </td>
+        <td>
+            <a th:href="@{/books/__${book.id}__}">
+                <button type="button">Details</button>
+            </a>
+            <button type="submit">Add to Cart</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
 </table>
 </body>
 </html>

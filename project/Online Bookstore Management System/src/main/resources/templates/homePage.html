@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    button {
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<h1>Home</h1>
+
+<!-- Thymeleaf conditional check for user authentication -->
+<div th:if="${signedIn == null}">
+  <!-- Redirect to authentication page if not logged in -->
+  <p>Please <a th:href="@{/auth}">log in</a> to access the home page.</p>
+</div>
+
+<div th:if="${signedIn != null}">
+  <!-- Display username and logout button -->
+  <p th:text="'Welcome, ' + ${username} + '!'"></p>
+  <form th:action="@{/auth/logout}" method="post">
+    <button type="submit">Logout</button>
+  </form>
+
+  <!-- Button for Book List -->
+  <a th:href="@{/books/all}">
+    <button type="button">Book List</button>
+  </a>
+
+  <!-- Thymeleaf conditional check for admin privileges -->
+  <div th:if="${isAdmin}">
+    <!-- Buttons for managing books and users -->
+    <a th:href="@{/books/manage}">
+      <button type="button">Manage Books</button>
+    </a>
+    <a th:href="@{/auth/manage}">
+      <button type="button">Manage Users</button>
+    </a>
+  </div>
+</div>
+</body>
+</html>

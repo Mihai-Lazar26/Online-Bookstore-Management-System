@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>User Management</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email
+        <th>Is admin</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.userID}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.getAdmin()}"></td>
+        <td>
+            <form th:action="@{/auth/makeAdmin}" method="post">
+                <input type="hidden" name="userId" th:value="${user.userID}" />
+                <button type="submit">Make Admin</button>
+            </form>
+
+            <form th:action="@{/auth/removeAdmin}" method="post">
+                <input type="hidden" name="userId" th:value="${user.userID}" />
+                <button type="submit">Remove Admin</button>
+            </form>
+
+            <form th:action="@{/auth/delete}" method="post">
+                <input type="hidden" name="userId" th:value="${user.userID}" />
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
