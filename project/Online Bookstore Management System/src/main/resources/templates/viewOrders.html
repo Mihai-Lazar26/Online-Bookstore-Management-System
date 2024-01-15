@@ -34,6 +34,10 @@
                     <span th:text="${order.status}"></span>
                 </div>
 
+                <form th:action="@{/orders/viewOrderItems}" method="get">
+                    <input type="hidden" name="orderId" th:value="${order.id}">
+                    <button type="submit">View order</button>
+                </form>
 
             </td>
         </tr>

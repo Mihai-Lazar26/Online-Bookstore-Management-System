@@ -4,20 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.spring.fmi.unibuc.online_bookstore_management_system.book.BookService;
 import project.spring.fmi.unibuc.online_bookstore_management_system.user.UserEntity;
 
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
+    private final BookService bookService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, BookService bookService) {
         this.orderService = orderService;
+        this.bookService = bookService;
     }
 
     @GetMapping("/viewAll")
@@ -53,5 +55,14 @@ public class OrderController {
     public String updateStatus(@RequestParam("orderId") Long orderId, @RequestParam("status") String status) {
         orderService.updateOrderStatus(orderId, status);
         return "redirect:/orders/viewAll";
+    }
+
+    @GetMapping("/viewOrderItems")
+    public String viewOrderItems(Model model, @RequestParam("orderId") Long orderId) {
+        OrderEntity order = orderService.getOrderById(orderId);
+        model.addAttribute("orderItems", order.getOrderItems());
+        model.addAttribute("booksService", bookService);
+        model.addAttribute("userId", UserEntity.signedInUser.getUserID());
+        return "viewOrderItemsPage";
     }
 }

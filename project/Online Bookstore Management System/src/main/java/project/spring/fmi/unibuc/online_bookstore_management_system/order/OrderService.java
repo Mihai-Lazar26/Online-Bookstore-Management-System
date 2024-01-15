@@ -50,27 +50,30 @@ public class OrderService {
 
     @Transactional
     public void updateOrderStatus(Long orderId, String newStatus) {
-        // Validate orderId
         if (orderId == null) {
             throw new IllegalArgumentException("Order ID cannot be null");
         }
-
-        // Retrieve the order from the database
         OrderEntity order = getOrderById(orderId);
-
-        // Perform any additional validation or business logic if needed
-
-        // Update the order status
         order.setStatus(newStatus);
-
-        // Save the updated order
         orderRepository.save(order);
     }
 
-    private OrderEntity getOrderById(Long orderId) {
+    public OrderEntity getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order with ID " + orderId + " not found"));
     }
 
 
+    public Boolean existsOrderByUserIdAndBookId(Long userId, Long bookId) {
+        List<OrderEntity> orders = orderRepository.findByUserId(userId);
+        for (OrderEntity order : orders) {
+            for (OrderItemEntity item : order.getOrderItems()) {
+                if (item.getBookId().equals(bookId)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

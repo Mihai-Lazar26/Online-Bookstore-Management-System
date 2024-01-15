@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit Review</title>
+    <!-- Add your CSS styling here if needed -->
+</head>
+<body>
+
+<div>
+    <h2>Submit Review</h2>
+
+    <form th:action="@{/review/submitReview}" method="post">
+        <input type="hidden" name="userId" th:value="${userId}" />
+        <input type="hidden" name="bookId" th:value="${bookId}" />
+
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+
+        <br/>
+
+        <label for="review">Review:</label>
+        <textarea id="review" name="review" rows="4" cols="50" required></textarea>
+
+        <br/>
+
+        <button type="submit">Submit Review</button>
+    </form>
+</div>
+
+</body>
+</html>
