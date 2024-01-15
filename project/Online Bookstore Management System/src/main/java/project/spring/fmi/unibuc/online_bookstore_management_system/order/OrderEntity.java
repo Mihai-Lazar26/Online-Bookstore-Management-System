@@ -1,6 +1,7 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.order;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,13 +13,14 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private Long userId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderItemEntity> orderItems;
-
+    @NonNull
     private LocalDateTime orderDate;
-
+    @NonNull
     private String status;
 
     public OrderEntity() {}

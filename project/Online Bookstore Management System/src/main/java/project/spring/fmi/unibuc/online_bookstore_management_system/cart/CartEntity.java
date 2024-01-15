@@ -1,6 +1,7 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.cart;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NonNull
     private Long userId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart", orphanRemoval = true)

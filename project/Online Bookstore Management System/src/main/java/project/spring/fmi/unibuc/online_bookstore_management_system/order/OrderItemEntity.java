@@ -1,6 +1,7 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.order;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "order_items")
@@ -12,9 +13,11 @@ public class OrderItemEntity {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private OrderEntity order;
-
+    @NonNull
     private Long bookId;
+    @NonNull
     private Integer price;
+    @NonNull
     private Integer quantity;
 
     public OrderItemEntity() {}

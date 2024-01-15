@@ -1,6 +1,7 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.review;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "reviews")
@@ -8,9 +9,13 @@ public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NonNull
     private Long userId;
+    @NonNull
     private Long bookId;
+    @NonNull
     private Integer rating;
+    @NonNull
     private String review;
 
     public ReviewEntity() {}

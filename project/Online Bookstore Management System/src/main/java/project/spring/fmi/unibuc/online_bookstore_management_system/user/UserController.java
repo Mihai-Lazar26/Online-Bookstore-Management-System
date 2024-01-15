@@ -57,10 +57,11 @@ public class UserController {
 
     @PostMapping("/register/submit")
     public String registerSubmit(Model model, @ModelAttribute("userEntity") UserEntity user, @RequestParam("confirmPassword") String confirmPassword) {
-        if (UserEntity.signedInUser!= null)
+        if (UserEntity.signedInUser != null)
             return "redirect:/";
 
-        if (!user.getPassword().equals(confirmPassword)) {
+        String userPassword = user.getPassword();
+        if (!confirmPassword.equals(userPassword)) {
             model.addAttribute("error", "Passwords do not match");
             return "register";
         }
@@ -74,6 +75,7 @@ public class UserController {
         userService.saveUser(user);
         return "authentication";
     }
+
     @PostMapping("/logout")
     public String logout(Model model) {
         UserEntity.signedInUser = null;

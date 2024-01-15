@@ -1,10 +1,12 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.user;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 import project.spring.fmi.unibuc.online_bookstore_management_system.cart.CartEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -22,7 +24,9 @@ public class UserEntity {
             generator = "user_sequence"
     )
     private Long userID;
+    @NonNull
     private String username, password, email;
+    @NonNull
     private Boolean isAdmin = false;
 
     public UserEntity() {
@@ -89,5 +93,17 @@ public class UserEntity {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserEntity user)) return false;
+        return Objects.equals(userID, user.userID) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(isAdmin, user.isAdmin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID, username, password, email, isAdmin);
     }
 }

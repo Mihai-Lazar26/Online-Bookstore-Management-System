@@ -1,6 +1,7 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.book;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 import project.spring.fmi.unibuc.online_bookstore_management_system.cart.CartItemEntity;
 
 import java.util.ArrayList;
@@ -20,8 +21,11 @@ public class BookEntity {
             generator = "book_sequence"
     )
     private Long id;
+    @NonNull
     private String title;
+    @NonNull
     private String author;
+    @NonNull
     private Integer price;
 
     public BookEntity() {}

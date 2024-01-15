@@ -1,6 +1,7 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.cart;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "cart_items")
@@ -9,11 +10,13 @@ public class CartItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private CartEntity cart;
-
+    @NonNull
     private Long bookId;
+    @NonNull
     private int quantity;
 
     public CartItemEntity() {}
@@ -67,7 +70,7 @@ public class CartItemEntity {
     public String toString() {
         return "CartItemEntity{" +
                 "id=" + id +
-                ", cart=" + cart +
+                ", cart=" + cart.getId() +
                 ", bookId=" + bookId +
                 ", quantity=" + quantity +
                 '}';
