@@ -5,58 +5,90 @@
   <title>Home</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 20px;
     }
 
     h1 {
       text-align: center;
+      color: #343a40;
     }
 
     button {
       margin: 10px;
       cursor: pointer;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    button.logout-btn {
+      background-color: #dc3545;
+    }
+
+    button.action-btn {
+      background-color: #007bff;
+    }
+
+    button.cart-btn, button.orders-btn {
+      background-color: #28a745;
+    }
+
+    button.manage-btn {
+      background-color: #6c757d;
+    }
+
+    button.view-all-orders-btn {
+      background-color: #ffc107;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    p {
+      color: #343a40;
     }
   </style>
 </head>
 <body>
+
 <h1>Home</h1>
 
-<!-- Thymeleaf conditional check for user authentication -->
 <div th:if="${signedIn == null}">
-  <!-- Redirect to authentication page if not logged in -->
   <p>Please <a th:href="@{/auth}">log in</a> to access the home page.</p>
 </div>
 
 <div th:if="${signedIn != null}">
-  <!-- Display username and logout button -->
   <p th:text="'Welcome, ' + ${username} + '!'"></p>
   <form th:action="@{/auth/logout}" method="post">
-    <button type="submit">Logout</button>
+    <button type="submit" class="logout-btn">Logout</button>
   </form>
 
-  <!-- Button for Book List -->
   <a th:href="@{/books/all}">
-    <button type="button">Book List</button>
+    <button type="button" class="action-btn">Book List</button>
   </a>
 
   <form th:action="@{/cart/view}" method="get">
     <input type="hidden" name="userId" th:value="${signedIn.userID}">
-    <button type="submit">View cart</button>
+    <button type="submit" class="cart-btn">View Cart</button>
   </form>
 
   <form th:action="@{/orders/viewUser}" method="get">
     <input type="hidden" name="userId" th:value="${signedIn.userID}">
-    <button type="submit">View orders</button>
+    <button type="submit" class="orders-btn">View Orders</button>
   </form>
-  <!-- Thymeleaf conditional check for admin privileges -->
+
   <div th:if="${isAdmin}">
-    <!-- Buttons for managing books and users -->
     <a th:href="@{/books/manage}">
-      <button type="button">Manage Books</button>
+      <button type="button" class="manage-btn">Manage Books</button>
     </a>
     <a th:href="@{/auth/manage}">
-      <button type="button">Manage Users</button>
+      <button type="button" class="manage-btn">Manage Users</button>
+    </a>
+    <a th:href="@{/orders/viewAll}">
+      <button type="button" class="view-all-orders-btn">View All Orders</button>
     </a>
   </div>
 </div>

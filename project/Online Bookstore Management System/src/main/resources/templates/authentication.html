@@ -3,8 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <title>Authentication Page</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 40px;
+    }
+
+    h1 {
+      color: #343a40;
+      text-align: center;
+    }
+
+    p {
+      color: #6c757d;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
+
 <h1>Welcome to the Authentication Page</h1>
 <p>Please select an option:</p>
 
@@ -15,5 +55,6 @@
 <form th:action="@{/auth/register}" method="get">
   <button type="submit">Register</button>
 </form>
+
 </body>
 </html>

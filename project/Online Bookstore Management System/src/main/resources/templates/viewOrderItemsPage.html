@@ -3,33 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Order Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h2>Order Details</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Book</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${orderItems}">
-            <td th:text="${booksService.getBookById(item.bookId).title}"></td>
-            <td th:text="${item.price}"></td>
-            <td th:text="${item.quantity}"></td>
-            <td>
-                <form th:action="@{/review/form}" method="get">
-                    <input type="hidden" name="userId" th:value="${userId}" />
-                    <input type="hidden" name="bookId" th:value="${item.bookId}" />
-
-                    <button type="submit">Review</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<h2>Order Details</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Book</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${orderItems}">
+        <td th:text="${booksService.getBookById(item.bookId).title}"></td>
+        <td th:text="${item.price}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td>
+            <form th:action="@{/review/form}" method="get">
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <input type="hidden" name="bookId" th:value="${item.bookId}" />
+                <button type="submit">Review</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

@@ -1,7 +1,68 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Add your head content here -->
+    <meta charset="UTF-8">
+    <title>Orders List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        div.status-update {
+            margin-bottom: 10px;
+        }
+
+        p.no-orders {
+            text-align: center;
+            color: #868e96;
+        }
+    </style>
 </head>
 <body>
 <h2>Orders List</h2>
@@ -23,7 +84,7 @@
             <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td th:text="${order.totalPrice}"></td>
             <td>
-                <div th:if="${isAdmin}">
+                <div th:if="${isAdmin}" class="status-update">
                     <form th:action="@{/orders/updateStatus}" method="post">
                         <input type="hidden" name="orderId" th:value="${order.id}">
                         <input type="text" name="status" th:value="${order.status}">
@@ -33,12 +94,12 @@
                 <div th:unless="${isAdmin}">
                     <span th:text="${order.status}"></span>
                 </div>
-
+            </td>
+            <td>
                 <form th:action="@{/orders/viewOrderItems}" method="get">
                     <input type="hidden" name="orderId" th:value="${order.id}">
                     <button type="submit">View order</button>
                 </form>
-
             </td>
         </tr>
         </tbody>
@@ -46,7 +107,7 @@
 </div>
 
 <div th:if="${#lists.isEmpty(orders)}">
-    <p>No orders available.</p>
+    <p class="no-orders">No orders available.</p>
 </div>
 </body>
 </html>

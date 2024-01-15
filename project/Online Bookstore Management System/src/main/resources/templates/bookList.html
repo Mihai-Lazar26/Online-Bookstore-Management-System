@@ -5,12 +5,13 @@
     <title>Book List</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 20px;
         }
 
         h1 {
             text-align: center;
+            color: #343a40;
         }
 
         table {
@@ -21,21 +22,40 @@
 
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
             text-align: left;
         }
 
         th {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
         button {
             cursor: pointer;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        button.details-btn {
+            background-color: #007bff;
+        }
+
+        button.cart-btn {
+            background-color: #28a745;
         }
     </style>
 </head>
 <body>
+
 <h1>Book List</h1>
+
 <table>
     <thead>
     <tr>
@@ -55,17 +75,18 @@
             <form th:action="@{/cart/add}" method="post">
                 <input type="hidden" name="userId" th:value="${userId}" />
                 <input type="hidden" name="bookId" th:value="${book.id}" />
-                <input type="number" name="quantity" value="1" min="1" /> <!-- Default quantity -->
+                <input type="number" name="quantity" value="1" min="1" />
         </td>
         <td>
             <a th:href="@{/books/__${book.id}__}">
-                <button type="button">Details</button>
+                <button type="button" class="details-btn">Details</button>
             </a>
-            <button type="submit">Add to Cart</button>
+            <button type="submit" class="cart-btn">Add to Cart</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>

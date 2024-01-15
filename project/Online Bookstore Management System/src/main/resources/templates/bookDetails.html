@@ -3,16 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #343a40;
+        }
+
+        div {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 400px;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #343a40;
+        }
+
+        p.book-not-found {
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
+
 <h1>Book Details</h1>
+
 <div th:if="${book != null}">
     <p>Title: <span th:text="${book.title}"></span></p>
     <p>Author: <span th:text="${book.author}"></span></p>
     <p>Price: <span th:text="${book.price}"></span></p>
 </div>
-<div th:if="${book == null}">
+
+<div th:if="${book == null}" class="book-not-found">
     <p>Book not found!</p>
 </div>
+
 </body>
 </html>
