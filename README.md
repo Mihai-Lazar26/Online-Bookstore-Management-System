@@ -40,10 +40,10 @@ Main Features for MVP Phase:
 - Endpoints: `/api/books`, `/api/books/{id}`
 3. Shopping Cart Functionality
 - Description: Enables users to add/remove books from the cart and checkout.
-- Endpoints: `/api/cart/add`, `/api/cart/remove`, `/api/cart/checkout`
+- Endpoints: `/api/cart/add`, `/api/cart/remove`, `/api/cart/submitOrder`
 4. Order Management
 - Description: Tracks order status and allows admin to update status.
-- Endpoints: `/api/orders`, `/api/orders/{id}/status`
+- Endpoints: `/api/orders/viewAll`, `/api/orders/updateStatus`
 5. Review and Rating System
 - Description: Allows users to rate and review purchased books.
-- Endpoints: `/api/books/{id}/reviews`, `/api/books/{id}/ratings
+- Endpoints: `/api/review/viewAll`, `/api/review/submitReview`
