@@ -1,5 +1,6 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.cart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
@@ -13,6 +14,7 @@ public class CartItemEntity {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonIgnore
     private CartEntity cart;
     @NonNull
     private Long bookId;

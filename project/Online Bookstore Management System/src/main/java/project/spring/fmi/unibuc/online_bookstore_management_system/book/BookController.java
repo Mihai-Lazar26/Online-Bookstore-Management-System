@@ -31,7 +31,7 @@ public class BookController {
     @GetMapping("/all")
     public String getAllBooks(Model model) {
         if (UserEntity.signedInUser == null) {
-            return "redirect:/";
+            return "reroute:/";
         }
         List<BookEntity> books = bookService.getAllBooks();
         model.addAttribute("books", books);

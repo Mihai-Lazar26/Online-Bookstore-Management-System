@@ -1,5 +1,6 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
@@ -17,6 +18,7 @@ public class OrderEntity {
     private Long userId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @JsonIgnore
     private List<OrderItemEntity> orderItems;
     @NonNull
     private LocalDateTime orderDate;

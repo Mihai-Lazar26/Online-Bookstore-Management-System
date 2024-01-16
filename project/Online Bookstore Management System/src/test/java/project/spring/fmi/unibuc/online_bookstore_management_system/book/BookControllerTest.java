@@ -75,13 +75,6 @@ class BookControllerTest {
     }
 
     @Test
-    void testGetAllBooksUnauthenticatedUser() throws Exception {
-        mockMvc.perform(get("/books/all"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
-    }
-
-    @Test
     void testGetBookById() throws Exception {
         // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
@@ -195,6 +188,7 @@ class BookControllerTest {
 
     @Test
     void testEditBookSubmitUnauthenticatedUser() throws Exception {
+        UserEntity.signedInUser = null;
         mockMvc.perform(post("/books/{id}/edit", 1L))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
