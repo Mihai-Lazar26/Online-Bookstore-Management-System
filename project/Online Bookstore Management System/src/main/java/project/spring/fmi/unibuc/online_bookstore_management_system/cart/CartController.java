@@ -61,13 +61,12 @@ public class CartController {
     @PostMapping("/add")
     public String addToCart(@RequestParam Long userId, @RequestParam Long bookId, @RequestParam int quantity) {
         cartService.addToCart(userId, bookId, quantity);
-        return "redirect:/cart/view?userId=" + userId; // Redirect to view the updated cart
+        return "redirect:/cart/view?userId=" + userId;
     }
 
     @PostMapping("/update")
     public String updateCartItem(@RequestParam Long cartId, @RequestParam Long bookId, @RequestParam int quantity) {
         cartService.updateCartItemQuantity(cartId, bookId, quantity);
-        // Redirect to view cart after updating quantity
         CartItemEntity cartItem = cartService.getCartItemByCartIdAndBookId(cartId, bookId);
         if (cartItem != null) {
             return "redirect:/cart/view?userId=" + cartItem.getCart().getUserId();
@@ -81,7 +80,7 @@ public class CartController {
         CartEntity cart = cartService.getCartByCartId(cartId);
         if (cart != null) {
             cartService.removeFromCart(cartId, bookId);
-            return "redirect:/cart/view?userId=" + cart.getUserId(); // Redirect to view cart after removing item
+            return "redirect:/cart/view?userId=" + cart.getUserId();
         } else {
             return "redirect:/cart/view";
         }

@@ -46,7 +46,6 @@ class ReviewControllerTest {
 
     @Test
     void viewReviews_ReturnsCorrectViewNameAndAddsAttributesToModel() {
-        // Arrange
         Long bookId = 1L;
         List<ReviewEntity> reviews = new ArrayList<>();
         BookEntity bookEntity = new BookEntity();
@@ -55,10 +54,8 @@ class ReviewControllerTest {
         Mockito.when(reviewService.getReviewsByBookId(bookId)).thenReturn(reviews);
         Mockito.when(bookService.getBookById(bookId)).thenReturn(bookEntity);
 
-        // Act
         String viewName = reviewController.viewReviews(model, bookId);
 
-        // Assert
         assertEquals("reviewPage", viewName);
         Mockito.verify(model).addAttribute("reviews", reviews);
         Mockito.verify(model).addAttribute("bookTitle", bookEntity.getTitle());
@@ -67,16 +64,13 @@ class ReviewControllerTest {
 
     @Test
     void getReviewForm_OrderExists_ReturnsCorrectViewNameAndAddsAttributesToModel() {
-        // Arrange
         Long userId = 1L;
         Long bookId = 2L;
 
         Mockito.when(orderService.existsOrderByUserIdAndBookId(userId, bookId)).thenReturn(true);
 
-        // Act
         String viewName = reviewController.getReviewForm(model, userId, bookId);
 
-        // Assert
         assertEquals("reviewForm", viewName);
         Mockito.verify(model).addAttribute("userId", userId);
         Mockito.verify(model).addAttribute("bookId", bookId);
@@ -84,31 +78,25 @@ class ReviewControllerTest {
 
     @Test
     void getReviewForm_OrderDoesNotExist_RedirectsToHomePage() {
-        // Arrange
         Long userId = 1L;
         Long bookId = 2L;
 
         Mockito.when(orderService.existsOrderByUserIdAndBookId(userId, bookId)).thenReturn(false);
 
-        // Act
         String viewName = reviewController.getReviewForm(model, userId, bookId);
 
-        // Assert
         assertEquals("redirect:/", viewName);
     }
 
     @Test
     void submitReview_CallsSubmitReviewAndRedirectsToCorrectView() {
-        // Arrange
         Long userId = 1L;
         Long bookId = 2L;
         Integer rating = 5;
         String reviewText = "Great book!";
 
-        // Act
         String viewName = reviewController.submitReview(userId, bookId, rating, reviewText);
 
-        // Assert
         Mockito.verify(reviewService).submitReview(userId, bookId, rating, reviewText);
         assertEquals("redirect:/review/viewAll?bookId=" + bookId, viewName);
     }

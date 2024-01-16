@@ -31,11 +31,9 @@ class BookControllerTest {
 
     @Test
     void testGetManageBooks() throws Exception {
-        // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
 
-        // Mock books
         List<BookEntity> books = new ArrayList<>();
         when(bookService.getAllBooks()).thenReturn(books);
 
@@ -44,7 +42,6 @@ class BookControllerTest {
                 .andExpect(view().name("bookListManage"))
                 .andExpect(model().attribute("books", hasSize(0)));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 
@@ -57,10 +54,8 @@ class BookControllerTest {
 
     @Test
     void testGetAllBooks() throws Exception {
-        // Mock signed-in user
         UserEntity.signedInUser = new UserEntity();
 
-        // Mock books
         List<BookEntity> books = new ArrayList<>();
         when(bookService.getAllBooks()).thenReturn(books);
 
@@ -70,17 +65,14 @@ class BookControllerTest {
                 .andExpect(model().attribute("books", hasSize(0)))
                 .andExpect(model().attribute("userId", equalTo(UserEntity.signedInUser.getUserID())));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 
     @Test
     void testGetBookById() throws Exception {
-        // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
 
-        // Mock book
         BookEntity book = new BookEntity();
         when(bookService.getBookById(ArgumentMatchers.any(Long.class))).thenReturn(book);
         mockMvc.perform(get("/books/{id}", 1L))
@@ -88,7 +80,6 @@ class BookControllerTest {
                 .andExpect(view().name("bookDetails"))
                 .andExpect(model().attribute("book", equalTo(book)));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 
@@ -101,7 +92,6 @@ class BookControllerTest {
 
     @Test
     void testAddBookForm() throws Exception {
-        // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
 
@@ -110,7 +100,6 @@ class BookControllerTest {
                 .andExpect(view().name("addBook"))
                 .andExpect(model().attribute("book", instanceOf(BookEntity.class)));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 
@@ -123,7 +112,6 @@ class BookControllerTest {
 
     @Test
     void testAddBookSubmit() throws Exception {
-        // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
 
@@ -133,7 +121,6 @@ class BookControllerTest {
 
         verify(bookService, times(1)).createBook(ArgumentMatchers.any(BookEntity.class));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 
@@ -146,11 +133,9 @@ class BookControllerTest {
 
     @Test
     void testEditBookForm() throws Exception {
-        // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
 
-        // Mock book
         BookEntity book = new BookEntity();
         when(bookService.getBookById(ArgumentMatchers.any(Long.class))).thenReturn(book);
 
@@ -159,7 +144,6 @@ class BookControllerTest {
                 .andExpect(view().name("editBook"))
                 .andExpect(model().attribute("book", equalTo(book)));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 
@@ -172,7 +156,6 @@ class BookControllerTest {
 
     @Test
     void testEditBookSubmit() throws Exception {
-        // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
 
@@ -182,7 +165,6 @@ class BookControllerTest {
 
         verify(bookService, times(1)).updateBook(eq(1L), ArgumentMatchers.any(BookEntity.class));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 
@@ -196,7 +178,6 @@ class BookControllerTest {
 
     @Test
     void testDeleteBook() throws Exception {
-        // Mock signed-in admin user
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
 
@@ -206,7 +187,6 @@ class BookControllerTest {
 
         verify(bookService, times(1)).deleteBook(eq(1L));
 
-        // Reset static variables
         UserEntity.signedInUser = null;
     }
 

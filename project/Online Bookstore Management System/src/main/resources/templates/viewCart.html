@@ -69,7 +69,6 @@
 
 <h2>Your Shopping Cart</h2>
 
-<!-- Check if the cart is not empty -->
 <div th:if="${cart.cartItems.size() > 0}">
     <table>
         <thead>
@@ -82,7 +81,6 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Iterate over cart items -->
         <tr th:each="item : ${cart.cartItems}">
             <td th:text="${books.getBookById(item.bookId).title}"></td>
             <td th:text="${item.quantity}"></td>
@@ -102,7 +100,6 @@
                 </form>
             </td>
         </tr>
-        <!-- End of iteration -->
         </tbody>
     </table>
 
@@ -118,7 +115,6 @@
     </div>
 </div>
 
-<!-- Show a message if the cart is empty -->
 <div th:unless="${cart.cartItems.size() > 0}">
     <p>Your cart is empty.</p>
 </div>

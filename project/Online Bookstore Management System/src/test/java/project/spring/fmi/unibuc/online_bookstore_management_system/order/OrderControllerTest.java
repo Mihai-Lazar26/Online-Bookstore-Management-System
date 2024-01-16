@@ -33,7 +33,6 @@ class OrderControllerTest {
 
     @Test
     void viewOrders_AdminUser_ReturnsViewOrdersPage() {
-        // Arrange
         UserEntity adminUser = new UserEntity();
         adminUser.setAdmin(true);
         UserEntity.signedInUser = adminUser;
@@ -43,10 +42,8 @@ class OrderControllerTest {
 
         Model model = Mockito.mock(Model.class);
 
-        // Act
         String viewName = orderController.viewOrders(model);
 
-        // Assert
         assertEquals("viewOrders", viewName);
         verify(model).addAttribute("orders", orders);
         verify(model).addAttribute("isAdmin", true);
@@ -54,7 +51,6 @@ class OrderControllerTest {
 
     @Test
     void viewUserOrders_ValidUser_ReturnsViewOrdersPage() {
-        // Arrange
         UserEntity signedUser = new UserEntity();
         signedUser.setUserID(1L);
         UserEntity.signedInUser = signedUser;
@@ -64,10 +60,8 @@ class OrderControllerTest {
 
         Model model = Mockito.mock(Model.class);
 
-        // Act
         String viewName = orderController.viewUserOrders(model, 1L);
 
-        // Assert
         assertEquals("viewOrders", viewName);
         verify(model).addAttribute("orders", orders);
         verify(model).addAttribute("isAdmin", false);
@@ -75,21 +69,17 @@ class OrderControllerTest {
 
     @Test
     void updateStatus_ValidOrder_ReturnsRedirectToViewAll() {
-        // Arrange
         Long orderId = 1L;
         String newStatus = "Shipped";
 
-        // Act
         String redirectToViewAll = orderController.updateStatus(orderId, newStatus);
 
-        // Assert
         assertEquals("redirect:/orders/viewAll", redirectToViewAll);
         verify(orderService).updateOrderStatus(orderId, newStatus);
     }
 
     @Test
     void viewOrderItems_ValidOrderId_ReturnsViewOrderItemsPage() {
-        // Arrange
         Long orderId = 1L;
         OrderEntity order = new OrderEntity();
         List<OrderItemEntity> orderItems = new ArrayList<>();
@@ -99,10 +89,8 @@ class OrderControllerTest {
 
         Model model = Mockito.mock(Model.class);
 
-        // Act
         String viewName = orderController.viewOrderItems(model, orderId);
 
-        // Assert
         assertEquals("viewOrderItemsPage", viewName);
         verify(model).addAttribute("orderItems", orderItems);
         verify(model).addAttribute("booksService", bookService);

@@ -28,21 +28,17 @@ class ReviewServiceTest {
 
     @Test
     void getReviewsByBookId_ReturnsCorrectList() {
-        // Arrange
         Long bookId = 1L;
         List<ReviewEntity> expectedReviews = new ArrayList<>();
         when(reviewRepository.findByBookId(bookId)).thenReturn(expectedReviews);
 
-        // Act
         List<ReviewEntity> actualReviews = reviewService.getReviewsByBookId(bookId);
 
-        // Assert
         assertEquals(expectedReviews, actualReviews);
     }
 
     @Test
     void submitReview_ExistingReviewEntity_SavesUpdatedReview() {
-        // Arrange
         Long userId = 1L;
         Long bookId = 2L;
         Integer rating = 4;
@@ -51,10 +47,8 @@ class ReviewServiceTest {
 
         when(reviewRepository.findByUserIdAndBookId(userId, bookId)).thenReturn(existingReview);
 
-        // Act
         reviewService.submitReview(userId, bookId, rating, reviewText);
 
-        // Assert
         verify(reviewRepository).save(existingReview);
         assertEquals(userId, existingReview.getUserId());
         assertEquals(bookId, existingReview.getBookId());
@@ -64,7 +58,6 @@ class ReviewServiceTest {
 
     @Test
     void submitReview_NewReviewEntity_SavesNewReview() {
-        // Arrange
         Long userId = 1L;
         Long bookId = 2L;
         Integer rating = 5;
@@ -73,10 +66,8 @@ class ReviewServiceTest {
 
         when(reviewRepository.findByUserIdAndBookId(userId, bookId)).thenReturn(newReview);
 
-        // Act
         reviewService.submitReview(userId, bookId, rating, reviewText);
 
-        // Assert
         verify(reviewRepository).save(Mockito.any(ReviewEntity.class));
     }
 }

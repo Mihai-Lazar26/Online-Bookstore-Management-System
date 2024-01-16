@@ -35,7 +35,7 @@ public class BookController {
         }
         List<BookEntity> books = bookService.getAllBooks();
         model.addAttribute("books", books);
-        model.addAttribute("userId", UserEntity.signedInUser.getUserID()); // Add userId to the model
+        model.addAttribute("userId", UserEntity.signedInUser.getUserID());
         return "bookList";
     }
 

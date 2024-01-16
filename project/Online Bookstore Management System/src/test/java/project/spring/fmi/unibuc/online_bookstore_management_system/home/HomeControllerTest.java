@@ -22,15 +22,12 @@ class HomeControllerTest {
 
     @Test
     void testHomePageUserLoggedIn() {
-        // Arrange
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setUsername("testUser");
         UserEntity.signedInUser.setAdmin(true);
 
-        // Act
         String result = homeController.homePage(model);
 
-        // Assert
         assertEquals("homePage", result);
         verify(model, times(1)).addAttribute("username", "testUser");
         verify(model, times(1)).addAttribute("isAdmin", true);
@@ -39,13 +36,10 @@ class HomeControllerTest {
 
     @Test
     void testHomePageUserNotLoggedIn() {
-        // Arrange
         UserEntity.signedInUser = null;
 
-        // Act
         String result = homeController.homePage(model);
 
-        // Assert
         assertEquals("redirect:/auth", result);
         verifyNoInteractions(model);
     }

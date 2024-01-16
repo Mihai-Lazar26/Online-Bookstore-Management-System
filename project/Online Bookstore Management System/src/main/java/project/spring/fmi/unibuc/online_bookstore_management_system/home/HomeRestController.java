@@ -17,7 +17,6 @@ public class HomeRestController {
             return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
         }
 
-        // Pass user information to the response
         HomeResponse homeResponse = new HomeResponse(
                 UserEntity.signedInUser.getUsername(),
                 UserEntity.signedInUser.getAdmin(),

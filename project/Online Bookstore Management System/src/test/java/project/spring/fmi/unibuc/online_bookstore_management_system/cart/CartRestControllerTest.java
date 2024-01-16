@@ -56,18 +56,15 @@ class CartRestControllerTest {
 
     @Test
     void shouldReturnCartView() throws Exception {
-        // Arrange
         UserEntity user = new UserEntity();
         CartEntity cart = new CartEntity();
         when(userService.findUserById(anyLong())).thenReturn(user);
         when(cartService.fetchCart(anyLong())).thenReturn(cart);
         when(bookService.getBookById(anyLong())).thenReturn(new BookEntity());
 
-        // Act
         ResultActions result = mockMvc.perform(get("/api/cart/view")
                 .param("userId", "1"));
 
-        // Assert
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.cart").exists())
                 .andExpect(jsonPath("$.totalPrice").exists());
@@ -78,14 +75,11 @@ class CartRestControllerTest {
 
     @Test
     void shouldReturnNotFoundForViewCartWhenUserNotFound() throws Exception {
-        // Arrange
         when(userService.findUserById(anyLong())).thenReturn(null);
 
-        // Act
         ResultActions result = mockMvc.perform(get("/api/cart/view")
                 .param("userId", "1"));
 
-        // Assert
         result.andExpect(status().isNotFound());
         verify(userService, times(1)).findUserById(anyLong());
         verifyNoInteractions(cartService);
@@ -93,16 +87,13 @@ class CartRestControllerTest {
 
     @Test
     void shouldReturnAddedToCart() throws Exception {
-        // Arrange
         when(bookService.getBookById(anyLong())).thenReturn(new BookEntity());
 
-        // Act
         ResultActions result = mockMvc.perform(post("/api/cart/add")
                 .param("userId", "1")
                 .param("bookId", "2")
                 .param("quantity", "3"));
 
-        // Assert
         result.andExpect(status().isCreated())
                 .andExpect(content().string("Added to cart"));
         verify(cartService, times(1)).addToCart(anyLong(), anyLong(), anyInt());
@@ -110,38 +101,31 @@ class CartRestControllerTest {
 
     @Test
     void shouldReturnCartUpdated() throws Exception {
-        // Arrange
         long cartId = 1L;
         long bookId = 2L;
         int quantity = 3;
 
-        when(cartService.getCartByCartId(cartId)).thenReturn(new CartEntity()); // return a non-null cart for testing
+        when(cartService.getCartByCartId(cartId)).thenReturn(new CartEntity());
 
-        // Act
         mockMvc.perform(post("/api/cart/update")
                         .param("cartId", String.valueOf(cartId))
                         .param("bookId", String.valueOf(bookId))
                         .param("quantity", String.valueOf(quantity)))
                 .andExpect(status().isOk());
 
-        // Assert
         verify(cartService).updateCartItemQuantity(cartId, bookId, quantity);
 
-        // Reset interactions to avoid interference with other tests
         reset(cartService);
     }
 
     @Test
     void shouldReturnRemovedFromCart() throws Exception {
-        // Arrange
         when(cartService.getCartByCartId(anyLong())).thenReturn(new CartEntity());
 
-        // Act
         ResultActions result = mockMvc.perform(post("/api/cart/remove")
                 .param("cartId", "1")
                 .param("bookId", "2"));
 
-        // Assert
         result.andExpect(status().isOk())
                 .andExpect(content().string("Item removed from cart"));
         verify(cartService, times(1)).getCartByCartId(anyLong());
@@ -150,29 +134,23 @@ class CartRestControllerTest {
 
     @Test
     void shouldReturnNotFoundForRemoveFromCartWhenCartNotFound() throws Exception {
-        // Arrange
         long cartId = 1L;
         long bookId = 2L;
 
         when(cartService.getCartByCartId(cartId)).thenReturn(null);
 
-        // Act
         mockMvc.perform(post("/api/cart/remove")
                         .param("cartId", String.valueOf(cartId))
                         .param("bookId", String.valueOf(bookId)))
                 .andExpect(status().isNotFound());
 
-        // Assert
         verify(cartService, never()).removeFromCart(anyLong(), anyLong());
 
-        // Reset interactions to avoid interference with other tests
         reset(cartService);
     }
 
     @Test
     void shouldReturnOrderSubmitted() throws Exception {
-        // Arrange
-        // Mock data
         CartEntity cart = new CartEntity();
         cart.setId(1L);
         List<CartItemEntity> cartItemEntityList = new ArrayList<>();
@@ -184,11 +162,9 @@ class CartRestControllerTest {
         when(cartService.getCartByUserId(anyLong())).thenReturn(cart);
         when(bookService.getBookById(anyLong())).thenReturn(book);
 
-        // Act
         ResultActions result = mockMvc.perform(post("/api/cart/submitOrder")
                 .param("userId", "1"));
 
-        // Assert
         result.andExpect(status().isOk())
                 .andExpect(content().string("Order submitted"));
         verify(cartService, times(1)).getCartByUserId(anyLong());
@@ -197,16 +173,12 @@ class CartRestControllerTest {
 
     @Test
     void shouldReturnBadRequestForSubmitOrderWhenCartEmpty() throws Exception {
-        // Arrange
-        // Mock data
         CartEntity cart = new CartEntity();
         when(cartService.getCartByUserId(anyLong())).thenReturn(cart);
 
-        // Act
         ResultActions result = mockMvc.perform(post("/api/cart/submitOrder")
                 .param("userId", "1"));
 
-        // Assert
         result.andExpect(status().isBadRequest())
                 .andExpect(content().string("Cart is empty"));
         verify(cartService, times(1)).getCartByUserId(anyLong());

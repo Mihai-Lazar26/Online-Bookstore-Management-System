@@ -37,16 +37,12 @@ public class CartService {
     }
 
     public void addToCart(Long userId, Long bookId, int quantity) {
-        // Fetch or create a cart for the user
         CartEntity cart = fetchCart(userId);
 
-        // Check if the item exists in the cart, update quantity if yes, otherwise add a new item
         CartItemEntity cartItem = cart.getCartItems().stream()
                 .filter(item -> item.getBookId().equals(bookId))
                 .findFirst()
                 .orElse(new CartItemEntity());
-
-        // Additional null checks if needed
 
         cartItem.setBookId(bookId);
         cartItem.setQuantity(cartItem.getQuantity() + quantity);
@@ -59,7 +55,6 @@ public class CartService {
 
 
     public void updateCartItemQuantity(Long cartId, Long bookId, int newQuantity) {
-        // Fetch the cart item and update its quantity
         CartItemEntity cartItem = cartItemRepository.findByCartIdAndBookId(cartId, bookId);
         if (cartItem != null) {
             if (newQuantity > 0) {

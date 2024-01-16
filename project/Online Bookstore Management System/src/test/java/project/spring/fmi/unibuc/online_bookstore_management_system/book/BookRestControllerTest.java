@@ -34,7 +34,6 @@ class BookRestControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Set up the default user for each test
         UserEntity.signedInUser = new UserEntity();
         UserEntity.signedInUser.setAdmin(true);
     }
@@ -42,14 +41,11 @@ class BookRestControllerTest {
 
     @Test
     void shouldReturnAllBooks() throws Exception {
-        // Arrange
         List<BookEntity> books = Arrays.asList(new BookEntity(), new BookEntity());
         when(bookService.getAllBooks()).thenReturn(books);
 
-        // Act
         ResultActions result = mockMvc.perform(get("/api/books/all"));
 
-        // Assert
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
         verify(bookService, times(1)).getAllBooks();
@@ -57,16 +53,13 @@ class BookRestControllerTest {
 
     @Test
     void shouldReturnBookByIdForAdminUser() throws Exception {
-        // Arrange
         BookEntity book = new BookEntity();
         book.setId(1L);
         when(bookService.getBookById(anyLong())).thenReturn(book);
 
-        // Act
         ResultActions result = mockMvc.perform(get("/api/books/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Assert
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists());
         verify(bookService, times(1)).getBookById(anyLong());
@@ -74,92 +67,72 @@ class BookRestControllerTest {
 
     @Test
     void shouldReturnNotFoundForNonExistingBook() throws Exception {
-        // Arrange
         when(bookService.getBookById(anyLong())).thenReturn(null);
 
-        // Act
         ResultActions result = mockMvc.perform(get("/api/books/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Assert
         result.andExpect(status().isNotFound());
         verify(bookService, times(1)).getBookById(anyLong());
     }
 
     @Test
     void shouldReturnCreatedForAddBook() throws Exception {
-        // Arrange
         BookEntity book = new BookEntity();
         when(bookService.createBook(any())).thenReturn(book);
 
-        // Act
         ResultActions result = mockMvc.perform(post("/api/books/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(book)));
 
-        // Assert
         result.andExpect(status().isCreated());
         verify(bookService, times(1)).createBook(any());
     }
 
     @Test
     void shouldReturnOkForEditBook() throws Exception {
-        // Arrange
         BookEntity updatedBook = new BookEntity();
         when(bookService.getBookById(anyLong())).thenReturn(new BookEntity());
 
-        // Act
         ResultActions result = mockMvc.perform(put("/api/books/{id}/edit", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(updatedBook)));
 
-        // Assert
         result.andExpect(status().isOk());
         verify(bookService, times(1)).updateBook(anyLong(), any());
     }
 
     @Test
     void shouldReturnNotFoundForEditNonExistingBook() throws Exception {
-        // Arrange
         BookEntity updatedBook = new BookEntity();
         when(bookService.getBookById(anyLong())).thenReturn(null);
 
-        // Act
         ResultActions result = mockMvc.perform(put("/api/books/{id}/edit", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(updatedBook)));
 
-        // Assert
         result.andExpect(status().isNotFound());
         verify(bookService, never()).updateBook(anyLong(), any());
     }
 
     @Test
     void shouldReturnOkForDeleteBook() throws Exception {
-        // Arrange
         when(bookService.getBookById(anyLong())).thenReturn(new BookEntity());
 
-        // Act
         ResultActions result = mockMvc.perform(delete("/api/books/{id}/delete", 1));
 
-        // Assert
         result.andExpect(status().isOk());
         verify(bookService, times(1)).deleteBook(anyLong());
     }
 
     @Test
     void shouldReturnNotFoundForDeleteNonExistingBook() throws Exception {
-        // Arrange
         when(bookService.getBookById(anyLong())).thenReturn(null);
 
-        // Act
         ResultActions result = mockMvc.perform(delete("/api/books/{id}/delete", 1));
 
-        // Assert
         result.andExpect(status().isNotFound());
         verify(bookService, never()).deleteBook(anyLong());
     }
-
-    // Additional tests for other methods
 
 }
