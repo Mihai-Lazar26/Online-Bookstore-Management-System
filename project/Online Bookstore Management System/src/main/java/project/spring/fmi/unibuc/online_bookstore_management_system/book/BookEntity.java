@@ -27,7 +27,6 @@ public class BookEntity {
     @NonNull
     private String author;
     @NonNull
-    @Min(value = 0, message = "Price cant be less than 0")
     private Integer price;
 
     public BookEntity() {}
