@@ -1,6 +1,7 @@
 package project.spring.fmi.unibuc.online_bookstore_management_system.book;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import org.springframework.lang.NonNull;
 import project.spring.fmi.unibuc.online_bookstore_management_system.cart.CartItemEntity;
 
@@ -26,6 +27,7 @@ public class BookEntity {
     @NonNull
     private String author;
     @NonNull
+    @Min(value = 0, message = "Price cant be less than 0")
     private Integer price;
 
     public BookEntity() {}

@@ -27,6 +27,9 @@ public class BookService {
     }
 
     public BookEntity createBook(BookEntity book) {
+        if(book.getPrice() < 0){
+            return null;
+        }
         return bookRepository.save(book);
     }
 
@@ -34,7 +37,7 @@ public class BookService {
         BookEntity existingBook = bookRepository.findById(id)
                 .orElse(null);
 
-        if (existingBook != null) {
+        if (existingBook != null && updatedBook.getPrice() >= 0) {
             existingBook.setTitle(updatedBook.getTitle());
             existingBook.setAuthor(updatedBook.getAuthor());
             existingBook.setPrice(updatedBook.getPrice());
