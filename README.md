@@ -21,7 +21,6 @@ Business Requirements:
 7. User Profile Customization
 - Description: Enable users to customize their profiles by adding avatars, setting preferences, or saving favorites.
 - Goal: Provide users with a personalized experience and improve engagement on the platform.
-Project realized by Lazăr Mihai, group 406
 8. Discounts and Promotions
 - Description: Implement promotional discounts or coupon codes for special occasions or selected books.
 - Goal: Encourage sales by offering discounts, attracting users with special offers and promotions.
